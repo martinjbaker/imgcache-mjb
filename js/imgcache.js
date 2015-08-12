@@ -178,16 +178,8 @@ var ImgCache = {
     // Returns the full absolute path from the root to the FileEntry
     Helpers.EntryGetPath = function (entry) {
         if (Helpers.isCordova()) {
-            // #93
-            if (Helpers.isCordovaIOS()) {
-                if (Helpers.isCordovaAndroidOlderThan3_3()) {
-                    return entry.fullPath;
-                } else {
-                    return entry.nativeURL;
-                }
-            }
-            // From Cordova 3.3 onward toURL() seems to be required instead of fullPath (#38)
-            return (typeof entry.toURL === 'function' ? Helpers.EntryToURL(entry) : entry.fullPath);
+            // Return cdvfile url on Cordova
+            return 'cdvfile://localhost/' + (ImgCache.options.usePersistentCache ? 'persistent' : 'temporary') + '/' +  ImgCache.options.localCacheFolder;
         } else {
             return entry.fullPath;
         }
